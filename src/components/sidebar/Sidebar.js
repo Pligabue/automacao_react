@@ -15,28 +15,24 @@ export default class Sidebar extends Component {
           <Typography variant="h5" noWrap color="textPrimary" style={{ padding: "2rem" }}>Automação</Typography>
         </Link>
         <List color="textPrimary">
-          <Link to="/dashboards" style={{ textDecoration: 'none', color: "inherit" }}>
-            <ListItem button>
-              <ListItemIcon><BarChartIcon color="secondary" /></ListItemIcon>
-              <ListItemText primary={<Typography color="textPrimary">Dashboards</Typography>} />
-            </ListItem>
-          </Link>
           <Divider />
-          <Link to="/algo" style={{ textDecoration: 'none', color: "inherit" }}>
-            <ListItem button>
-              <ListItemIcon><AssignmentOutlinedIcon color="secondary" /></ListItemIcon>
-              <ListItemText primary={<Typography color="textPrimary">Algo</Typography>} />
-            </ListItem>
-          </Link>
-          <Divider />
-          <Link to="/outracoisa" style={{ textDecoration: 'none', color: "inherit" }}>
-            <ListItem button>
-              <ListItemIcon><CommentOutlinedIcon color="secondary" /></ListItemIcon>
-              <ListItemText primary={<Typography color="textPrimary">Outra Coisa</Typography>} />
-            </ListItem>
-          </Link>
+          <SidebarItem to="/dashboards" text="Dashboards"><BarChartIcon color="secondary" /></SidebarItem>
+          <SidebarItem to="/algo" text="Algo"><AssignmentOutlinedIcon color="secondary" /></SidebarItem>
+          <SidebarItem to="/outracoisa" text="Outra Coisa"><CommentOutlinedIcon color="secondary" /></SidebarItem>
         </List>
       </Box>
     );
   }
+}
+
+function SidebarItem(props) {
+  return (
+    <Link to={props.to} style={{ textDecoration: 'none', color: "inherit" }}>
+      <ListItem button>
+        <ListItemIcon>{props.children}</ListItemIcon>
+        <ListItemText primary={<Typography color="textPrimary">{props.text}</Typography>} />
+      </ListItem>
+      <Divider />
+    </Link>
+  )
 }
