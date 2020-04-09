@@ -4,6 +4,7 @@ import { List, ListItem, ListItemText, Typography, Divider, ListItemIcon, Icon }
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
+import BarChartIcon from "@material-ui/icons/BarChart"
 import { Link } from 'react-router-dom';
 
 export default class Sidebar extends Component {
@@ -16,7 +17,7 @@ export default class Sidebar extends Component {
         <List color="textPrimary">
           <Link to="/dashboards" style={{ textDecoration: 'none', color: "inherit" }}>
             <ListItem button>
-              <ListItemIcon><AccountCircleOutlinedIcon color="secondary" /></ListItemIcon>
+              <ListItemIcon><BarChartIcon color="secondary" /></ListItemIcon>
               <ListItemText primary={<Typography color="textPrimary">Dashboards</Typography>} />
             </ListItem>
           </Link>
