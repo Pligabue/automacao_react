@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Box, Button } from '@material-ui/core';
+import DashboardItem from '../dashboard-item/DashboardItem';
 import SimpleChart from '../../chart/SimpleChart';
 
 export default class DashboardRow extends Component {
@@ -30,7 +31,7 @@ export default class DashboardRow extends Component {
 
   getItems = () => {
     return this.state.items.map((value, index) => (
-      <SimpleChart 
+      <DashboardItem 
         key={index} 
         itemNum={String(this.props.rowNum) + String(index)} 
         rowCount={this.props.rowCount} 

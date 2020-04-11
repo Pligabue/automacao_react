@@ -59,13 +59,11 @@ export default class SimpleChart extends Component {
   }
 
   resize = () => {
-    console.log("Resize for item number", this.props.itemNum)
     let chartId = 'chart-' + String(this.props.itemNum)
     let ctx = document.getElementById(chartId);
     ctx.parentNode.style.width = this.props.width + "px"
     ctx.style.width = ctx.offsetWidth + "px"
     ctx.parentNode.style.height = this.props.height + "px"
     ctx.style.height = this.props.height + "px"
-    console.log("Result for item number", ctx.parentNode.offsetWidth)
   }
 }
