@@ -6,14 +6,15 @@ export default class DashboardItem extends Component {
 
   componentDidUpdate(prevProps) {
     this.resize()
+    console.log(this.props.itemData)
   }
 
   render() {
 
     return (
-      <Box flexGrow="1" id={"item-" + this.props.itemNum}>
+      <Box flexGrow="1" id={"item-" + this.props.itemId}>
         <SimpleChart 
-          itemNum={this.props.itemNum} 
+          itemId={this.props.itemId} 
           rowCount={this.props.rowCount} 
           itemCount={this.props.itemCount} 
           width={this.props.width}
@@ -24,7 +25,7 @@ export default class DashboardItem extends Component {
   }
 
   resize = () => {
-    let itemId = "item-" + this.props.itemNum
+    let itemId = "item-" + this.props.itemId
     let item = document.getElementById(itemId);
     item.style.width = this.props.width + "px"
     item.style.height = this.props.height + "px"

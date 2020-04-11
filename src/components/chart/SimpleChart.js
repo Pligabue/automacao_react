@@ -4,7 +4,7 @@ import Chart from "chart.js"
 export default class SimpleChart extends Component {
 
   componentDidMount() {
-    let chartId = 'chart-' + String(this.props.itemNum)
+    let chartId = 'chart-' + String(this.props.itemId)
     let ctx = document.getElementById(chartId);
     new Chart(ctx, {
       type: 'bar',
@@ -53,13 +53,13 @@ export default class SimpleChart extends Component {
   render() {
     return (
       <div style={{ position: "relative", padding: "1rem", boxSizing: "border-box" }}>  
-        <canvas id={"chart-" + String(this.props.itemNum)} />
+        <canvas id={"chart-" + String(this.props.itemId)} />
       </div>
     );
   }
 
   resize = () => {
-    let chartId = 'chart-' + String(this.props.itemNum)
+    let chartId = 'chart-' + String(this.props.itemId)
     let ctx = document.getElementById(chartId);
     ctx.parentNode.style.width = this.props.width + "px"
     ctx.style.width = ctx.offsetWidth + "px"

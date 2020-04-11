@@ -12,8 +12,8 @@ export default class Dashboards extends Component {
   }
   
   componentDidMount() {
-    this.addRow()
     this.updateHeight()
+    this.addRow()
     window.addEventListener("resize", this.updateHeight)
   }
 
@@ -33,19 +33,49 @@ export default class Dashboards extends Component {
     return this.state.rows.map((value, index) => (
       <DashboardRow
         key={index} 
-        rowNum={String(index)} 
+        rowNum={index} 
         rowCount={this.state.rows.length} 
         height={this.state.totalHeight/this.state.rows.length}
+        items={this.state.rows[index].items}
+        addItem={this.addItem}
       />
     ))
   }
 
   addRow = () => {
+    if (this.state.rows.length >= 3) {
+      return
+    }
+    let newRow = {
+      rowNum: this.state.rows.length,
+      items: [{
+        type: "default",
+        itemNum: 0
+      }]
+    }
     if (this.state.rows.length < 3) {
       this.setState({
-        rows: [...this.state.rows, 0]
+        rows: [...this.state.rows, newRow]
       })
     }
+  }
+
+  addItem = (rowNum) => {
+    if (this.state.rows[rowNum].items.length >= 4) {
+      return
+    }
+    let rows = this.state.rows
+    rows[rowNum].items = rows[rowNum].items.concat({
+      type: "default",
+      itemNum: rows[rowNum].items.length
+    })
+    this.setState({
+      rows: rows
+    })
+  }
+
+  updateObject = (rowNum, itemNum, key, value) => {
+    return
   }
 
   updateHeight = () => {

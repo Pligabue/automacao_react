@@ -13,7 +13,7 @@ export default class DashboardRow extends Component {
   }
 
   componentDidMount() {
-    this.addItem()
+    console.log("items are", this.props.items)
     this.updateWidth()
     window.addEventListener("resize", this.updateWidth)
   }
@@ -21,7 +21,7 @@ export default class DashboardRow extends Component {
   render() {
     return (
       <Box flexGrow="1" display="flex" flexDirection="row">
-        <Box flexGrow="1" display="flex" flexDirection="row" id={"canvas-container-" + this.props.rowNum}>
+        <Box flexGrow="1" display="flex" flexDirection="row" id={"row-" + this.props.rowNum}>
           {this.getItems()}
         </Box>
         <Button onClick={this.addItem}>ADD ITEM</Button>
@@ -30,32 +30,24 @@ export default class DashboardRow extends Component {
   }
 
   getItems = () => {
-    return this.state.items.map((value, index) => (
+    return this.props.items.map((item, index) => (
       <DashboardItem 
+        itemData={{...item}}
         key={index} 
-        itemNum={String(this.props.rowNum) + String(index)} 
-        rowCount={this.props.rowCount} 
-        itemCount={this.state.items.length} 
-        width={this.state.totalWidth/this.state.items.length}
+        itemId={String(this.props.rowNum) + String(item.itemNum)}
+        width={this.state.totalWidth/this.props.items.length}
         height={this.props.height}
       />
     ))
   }
 
   addItem = () => {
-    let newItem = {
-      dataset: [0]
-    }
-    if (this.state.items.length < 4) {
-      this.setState({
-        items: [...this.state.items, newItem]
-      })
-    }
+    this.props.addItem(this.props.rowNum)
   }
 
   updateWidth = () => {
     this.setState({
-      totalWidth: document.getElementById("canvas-container-" + this.props.rowNum).offsetWidth
+      totalWidth: document.getElementById("row-" + this.props.rowNum).offsetWidth
     })
   }
 }
