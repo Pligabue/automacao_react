@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
-import { List, ListItem, ListItemText, Typography, Divider, ListItemIcon, Icon } from '@material-ui/core';
-import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
+import { List, ListItem, ListItemText, Typography, Divider, ListItemIcon } from '@material-ui/core';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 import BarChartIcon from "@material-ui/icons/BarChart"
