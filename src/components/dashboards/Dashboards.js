@@ -38,6 +38,7 @@ export default class Dashboards extends Component {
         height={this.state.totalHeight/this.state.rows.length}
         items={this.state.rows[index].items}
         addItem={this.addItem}
+        updateItem={this.updateItem}
       />
     ))
   }
@@ -74,8 +75,12 @@ export default class Dashboards extends Component {
     })
   }
 
-  updateObject = (rowNum, itemNum, key, value) => {
-    return
+  updateItem = (rowNum, itemNum, obj) => {
+    let rows = this.state.rows
+    rows[rowNum].items[itemNum] = {...rows[rowNum].items[itemNum], ...obj}
+    this.setState({
+      rows: rows
+    })
   }
 
   updateHeight = () => {

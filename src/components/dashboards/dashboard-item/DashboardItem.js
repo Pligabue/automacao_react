@@ -6,7 +6,6 @@ export default class DashboardItem extends Component {
 
   componentDidUpdate(prevProps) {
     this.resize()
-    console.log(this.props.itemData)
   }
 
   render() {
@@ -22,6 +21,10 @@ export default class DashboardItem extends Component {
         />
       </Box>
     );
+  }
+
+  updateItem = (obj) => {
+    this.props.updateItem(this.props.itemNum, obj)
   }
 
   resize = () => {
