@@ -19,12 +19,12 @@ export default class Dashboards extends Component {
 
   render() {
     return (
-      <Box flexGrow="1" display="flex" flexDirection="column" justifyItems="stretch">
-        <Box m="2rem 4rem 0"><Typography color="secondary" variant="h3">Dashboards</Typography></Box>
-        <Box flexGrow="1" id="row-container">
+      <Box flexGrow="1" display="flex" flexDirection="column" justifyItems="stretch" bgcolor="secondary.main">
+        <Box p="1rem 4rem"><Typography variant="h3">Dashboards</Typography></Box>
+        <Box flexGrow="1" id="row-container" bgcolor="background.default">
           {this.getRows()}
         </Box>
-        <Button onClick={this.addRow}>ADD ROW</Button>
+        <Button onClick={this.addRow} color="inherit"><Typography>ADD ROW</Typography></Button>
       </Box>
     );
   }

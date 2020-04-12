@@ -13,8 +13,8 @@ export default class DashboardItem extends Component {
   render() {
 
     return (
-      <Box flexGrow="1" id={"item-" + this.props.itemId}>
-        <Box position="absolute" zIndex={1}><IconButton onClick={this.removeItem}><ClearIcon  /></IconButton></Box>
+      <Box flexGrow="1" id={"item-" + this.props.itemId} position="relative">
+        <Box position="absolute" right="0" zIndex={1}><IconButton onClick={this.removeItem}><ClearIcon  /></IconButton></Box>
         <SimpleChart 
           itemId={this.props.itemId} 
           rowCount={this.props.rowCount} 
