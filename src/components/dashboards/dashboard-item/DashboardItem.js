@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Box, IconButton } from '@material-ui/core';
+import { Box, IconButton, Button } from '@material-ui/core';
 import SimpleChart from '../../chart/SimpleChart';
 
 import ClearIcon from '@material-ui/icons/Clear';
+import AddIcon from '@material-ui/icons/Add';
 
 export default class DashboardItem extends Component {
 
@@ -13,17 +14,37 @@ export default class DashboardItem extends Component {
   render() {
 
     return (
-      <Box flexGrow="1" id={"item-" + this.props.itemId} position="relative">
+      <Box id={"item-" + this.props.itemId} position="relative" width={this.props.width} height={this.props.height}>
         <Box position="absolute" right="0" zIndex={1}><IconButton onClick={this.removeItem}><ClearIcon  /></IconButton></Box>
-        <SimpleChart 
-          itemId={this.props.itemId} 
-          rowCount={this.props.rowCount} 
-          itemCount={this.props.itemCount} 
-          width={this.props.width}
-          height={this.props.height} 
-        />
+        <Box height="100%" display="flex" alignItems="center" justifyContent="center">
+          {this.getContent()}
+        </Box>  
       </Box>
     );
+  }
+
+  getContent = () => {
+    switch (this.props.type) {
+      case "default":
+        return (
+          <IconButton 
+            onClick={() => this.updateItem({ type: "chart" })}>
+            <AddIcon />
+          </IconButton>
+        )
+      case "chart":
+        return (
+          <SimpleChart 
+            itemId={this.props.itemId} 
+            rowCount={this.props.rowCount} 
+            itemCount={this.props.itemCount} 
+            width={this.props.width}
+            height={this.props.height}
+          />
+        )
+      default:
+        break;
+    }
   }
 
   updateItem = (obj) => {

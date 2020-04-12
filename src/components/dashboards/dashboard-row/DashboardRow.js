@@ -14,7 +14,6 @@ export default class DashboardRow extends Component {
 
   componentDidMount() {
     this.updateWidth()
-    window.addEventListener("resize", this.updateWidth)
   }
 
   render() {
@@ -31,7 +30,7 @@ export default class DashboardRow extends Component {
   getItems = () => {
     return this.props.items.map((item, index) => (
       <DashboardItem 
-        itemData={item}
+        {...item}
         itemNum={index}
         key={index} 
         itemId={String(this.props.rowNum) + String(item.itemNum)}

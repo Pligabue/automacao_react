@@ -14,7 +14,6 @@ export default class Dashboards extends Component {
   componentDidMount() {
     this.updateHeight()
     this.addRow()
-    window.addEventListener("resize", this.updateHeight)
   }
 
   render() {

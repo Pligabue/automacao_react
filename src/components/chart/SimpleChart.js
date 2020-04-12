@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Chart from "chart.js"
+import { Box } from '@material-ui/core';
 
 export default class SimpleChart extends Component {
 
@@ -54,27 +55,16 @@ export default class SimpleChart extends Component {
         },
       }
     });
-    this.resize()
-  }
-
-  componentDidUpdate(prevProps) {
-    this.resize()
   }
 
   render() {
     return (
-      <div style={{ position: "relative", padding: "1rem", boxSizing: "border-box" }}>  
+      <Box
+        height={this.props.height} 
+        width={this.props.width} 
+        style={{ position: "relative", padding: "1rem", boxSizing: "border-box" }}>  
         <canvas id={"chart-" + String(this.props.itemId)} />
-      </div>
+      </Box>
     );
-  }
-
-  resize = () => {
-    let chartId = 'chart-' + String(this.props.itemId)
-    let ctx = document.getElementById(chartId);
-    ctx.parentNode.style.width = this.props.width + "px"
-    ctx.style.width = ctx.offsetWidth + "px"
-    ctx.parentNode.style.height = this.props.height + "px"
-    ctx.style.height = this.props.height + "px"
   }
 }
