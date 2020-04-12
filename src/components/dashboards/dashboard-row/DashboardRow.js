@@ -38,6 +38,7 @@ export default class DashboardRow extends Component {
         width={this.state.totalWidth/this.props.items.length}
         height={this.props.height}
         updateItem={this.updateItem}
+        removeItem={this.removeItem}
       />
     ))
   }
@@ -48,6 +49,10 @@ export default class DashboardRow extends Component {
 
   updateItem = (itemNum, obj) => {
     this.props.updateItem(this.props.rowNum, itemNum, obj)
+  }
+
+  removeItem = (itemNum) => {
+    this.props.removeItem(this.props.rowNum, itemNum)
   }
 
   updateWidth = () => {

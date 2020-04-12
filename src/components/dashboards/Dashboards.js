@@ -39,6 +39,7 @@ export default class Dashboards extends Component {
         items={this.state.rows[index].items}
         addItem={this.addItem}
         updateItem={this.updateItem}
+        removeItem={this.removeItem}
       />
     ))
   }
@@ -48,7 +49,6 @@ export default class Dashboards extends Component {
       return
     }
     let newRow = {
-      rowNum: this.state.rows.length,
       items: [{
         type: "default",
         itemNum: 0
@@ -80,6 +80,19 @@ export default class Dashboards extends Component {
     rows[rowNum].items[itemNum] = {...rows[rowNum].items[itemNum], ...obj}
     this.setState({
       rows: rows
+    })
+  }
+
+  removeItem = (rowNum, itemNum) => {
+    let rows = this.state.rows
+    rows[rowNum].items.splice(itemNum, 1)
+    if (rows[rowNum].items.length === 0) {
+      rows.splice(rowNum, 1)
+    }
+    this.setState({
+      rows: rows
+    }, () => {
+      console.log(this.state)
     })
   }
 

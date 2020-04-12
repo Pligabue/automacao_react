@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Box } from '@material-ui/core';
+import { Box, IconButton } from '@material-ui/core';
 import SimpleChart from '../../chart/SimpleChart';
+
+import ClearIcon from '@material-ui/icons/Clear';
 
 export default class DashboardItem extends Component {
 
@@ -12,6 +14,7 @@ export default class DashboardItem extends Component {
 
     return (
       <Box flexGrow="1" id={"item-" + this.props.itemId}>
+        <Box position="absolute" zIndex={1}><IconButton onClick={this.removeItem}><ClearIcon  /></IconButton></Box>
         <SimpleChart 
           itemId={this.props.itemId} 
           rowCount={this.props.rowCount} 
@@ -25,6 +28,10 @@ export default class DashboardItem extends Component {
 
   updateItem = (obj) => {
     this.props.updateItem(this.props.itemNum, obj)
+  }
+
+  removeItem = () => {
+    this.props.removeItem(this.props.itemNum)
   }
 
   resize = () => {
