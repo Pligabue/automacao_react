@@ -60,8 +60,8 @@ export default class SimpleChart extends Component {
   render() {
     return (
       <Box
-        height={this.props.height} 
-        width={this.props.width} 
+        height={1} 
+        width={1} 
         style={{ position: "relative", padding: "1rem", boxSizing: "border-box" }}>  
         <canvas id={"chart-" + String(this.props.itemId)} />
       </Box>

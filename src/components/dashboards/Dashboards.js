@@ -12,7 +12,6 @@ export default class Dashboards extends Component {
   }
   
   componentDidMount() {
-    this.updateHeight()
     this.addRow()
   }
 
@@ -34,7 +33,7 @@ export default class Dashboards extends Component {
         key={index} 
         rowNum={index} 
         rowCount={this.state.rows.length} 
-        height={this.state.totalHeight/this.state.rows.length}
+        height={1/this.state.rows.length}
         items={this.state.rows[index].items}
         addItem={this.addItem}
         updateItem={this.updateItem}
@@ -92,12 +91,6 @@ export default class Dashboards extends Component {
       rows: rows
     }, () => {
       console.log(this.state)
-    })
-  }
-
-  updateHeight = () => {
-    this.setState({
-      totalHeight: document.getElementById("row-container").offsetHeight
     })
   }
 }

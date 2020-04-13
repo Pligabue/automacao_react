@@ -12,13 +12,9 @@ export default class DashboardRow extends Component {
     }
   }
 
-  componentDidMount() {
-    this.updateWidth()
-  }
-
   render() {
     return (
-      <Box flexGrow="1" display="flex" flexDirection="row">
+      <Box flexGrow="1" display="flex" flexDirection="row" height={this.props.height}>
         <Box flexGrow="1" display="flex" flexDirection="row" id={"row-" + this.props.rowNum}>
           {this.getItems()}
         </Box>
@@ -34,8 +30,7 @@ export default class DashboardRow extends Component {
         itemNum={index}
         key={index} 
         itemId={String(this.props.rowNum) + String(item.itemNum)}
-        width={this.state.totalWidth/this.props.items.length}
-        height={this.props.height}
+        width={1/this.props.items.length}
         updateItem={this.updateItem}
         removeItem={this.removeItem}
       />
@@ -52,11 +47,5 @@ export default class DashboardRow extends Component {
 
   removeItem = (itemNum) => {
     this.props.removeItem(this.props.rowNum, itemNum)
-  }
-
-  updateWidth = () => {
-    this.setState({
-      totalWidth: document.getElementById("row-" + this.props.rowNum).offsetWidth
-    })
   }
 }
