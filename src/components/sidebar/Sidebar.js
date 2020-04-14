@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import { List, ListItem, ListItemText, Typography, Divider, ListItemIcon } from '@material-ui/core';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
-import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
+import InfoIcon from '@material-ui/icons/Info';
+import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from "@material-ui/icons/BarChart"
 import { Link } from 'react-router-dom';
 
@@ -11,13 +12,14 @@ export default class Sidebar extends Component {
     return (
       <Box bgcolor="background.default">
         <Link to="/" style={{ textDecoration: 'none', color: "inherit" }}>
-          <Typography variant="h5" noWrap color="textPrimary" style={{ padding: "2rem" }}>Automação</Typography>
+          <Typography variant="h4" noWrap color="textPrimary" style={{ padding: "2rem" }}>Automação</Typography>
         </Link>
         <List color="textPrimary">
           <Divider />
           <SidebarItem to="/dashboards" text="Dashboards"><BarChartIcon color="secondary" /></SidebarItem>
           <SidebarItem to="/algo" text="Algo"><AssignmentOutlinedIcon color="secondary" /></SidebarItem>
-          <SidebarItem to="/outracoisa" text="Outra Coisa"><CommentOutlinedIcon color="secondary" /></SidebarItem>
+          <SidebarItem to="/sobre" text="Sobre o projeto"><InfoIcon color="secondary" /></SidebarItem>
+          <SidebarItem to="/equipe" text="Equipe"><PeopleIcon color="secondary" /></SidebarItem>
         </List>
       </Box>
     );
