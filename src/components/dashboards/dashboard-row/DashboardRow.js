@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Box, Button } from '@material-ui/core';
 import DashboardItem from '../dashboard-item/DashboardItem';
-import SimpleChart from '../../chart/SimpleChart';
 
 export default class DashboardRow extends Component {
 
