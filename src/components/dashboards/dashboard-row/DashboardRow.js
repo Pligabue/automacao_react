@@ -18,7 +18,7 @@ export default class DashboardRow extends Component {
         <Box flexGrow="1" display="flex" flexDirection="row" id={"row-" + this.props.rowNum}>
           {this.getItems()}
         </Box>
-        <Button onClick={this.addItem}>ADD ITEM</Button>
+        <Button onClick={this.addItem}>ADD</Button>
       </Box>
     );
   }
@@ -30,7 +30,7 @@ export default class DashboardRow extends Component {
         itemNum={index}
         key={index} 
         itemId={String(this.props.rowNum) + String(item.itemNum)}
-        width={1/this.props.items.length}
+        width={(1/this.props.items.length) - 0.01}
         updateItem={this.updateItem}
         removeItem={this.removeItem}
       />
