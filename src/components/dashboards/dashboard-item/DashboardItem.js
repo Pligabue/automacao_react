@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box, IconButton, Button, Modal, Typography, Select, MenuList, option } from '@material-ui/core';
+import { Box, IconButton, Button, Typography, Modal, ThemeProvider } from '@material-ui/core';
 import SimpleChart from '../../chart/SimpleChart';
 
 import ClearIcon from '@material-ui/icons/Clear';
@@ -13,6 +13,7 @@ export default class DashboardItem extends Component {
     this.state = {
       estacao: "",
       estacaoList: [],
+      open: true,
     }
   }
 
@@ -30,13 +31,22 @@ export default class DashboardItem extends Component {
     }
   }
 
+  closeModal = () => {
+    this.updateItem({
+      type: "default"
+    })
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     if (!this.state.dataInicio || !this.state.dataFim || this.state.estacaoList.length === 0) {
       return
     }
-    Axios.get(`https://automacao-backend.azurewebsites.net/medicoes?dataInicio=${this.state.dataInicio}&dataFim=${this.state.dataFim}&estacaoList=${this.state.estacaoList}`)
+    let url = `https://automacao-backend.azurewebsites.net/medicoes?dataInicio=${this.state.dataInicio}&dataFim=${this.state.dataFim}&estacaoList=${this.state.estacaoList}`
+    console.log(url)
+    Axios.get(url)
       .then((response) => {
+        console.log(response.data)
         this.updateItem({
           config: buildConfig(response.data),
           type: "chart"
@@ -70,6 +80,8 @@ export default class DashboardItem extends Component {
       case "form":
         return (
           <SelectionForm 
+            open={this.state.open}
+            onClose={this.closeModal}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             itemId={this.props.itemId}
@@ -93,12 +105,13 @@ export default class DashboardItem extends Component {
   }
 
   getEstacaoList = () => {
-    if (this.state.estacaoList.length > 1) {
-      return this.state.estacaoList.reduce((total, estacao) => {
-        return total + ", " + humanize(estacao)
+    let humanized = this.state.estacaoList.map((estacao, index) => (humanize(estacao)))
+    if (humanized.length >= 1) {
+      return humanized.reduce((total, estacao) => {
+        return total + ", " + estacao
       })
     } else {
-      return this.state.estacaoList[0] ? humanize(this.state.estacaoList[0]) : "Nenhuma"
+      return "Nenhuma"
     }
   }
 
@@ -113,55 +126,61 @@ export default class DashboardItem extends Component {
 
 function SelectionForm(props) {
   return(
-    <Box position="absolute">
-      <Box bgcolor="secondary.main" p={1} textAlign="center"  borderRadius="0.5rem 0.5rem 0 0">
-        <Typography variant="h6">Adicionar Medição</Typography>
-      </Box>
-      <Box display="flex" flexDirection="column" alignItems="center" bgcolor="text.secondary" p={1} borderRadius="0 0 0.5rem 0.5rem">
-        <Box p={1}>
-          <label>Estações selecionadas: </label>
-          <span>{props.getEstacaoList()}</span>
+    <Modal 
+      open={props.open} 
+      onClose={props.onClose} 
+      style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+    >
+      <Box position="absolute" style={{ outline: 0 }} bgcolor="background.default">
+        <Box bgcolor="secondary.main" p={1} textAlign="center"  borderRadius="0.5rem 0.5rem 0 0">
+          <Typography variant="h6">Adicionar Medição</Typography>
         </Box>
-        <form onSubmit={props.handleSubmit}>
+        <Box display="flex" flexDirection="column" alignItems="center" bgcolor="text.secondary" p={1} borderRadius="0 0 0.5rem 0.5rem">
           <Box p={1}>
-            <label htmlFor={"estacao-" + props.itemId}>Selecione a estação: </label>
-            <select 
-              id={"estacao-" + props.itemId} 
-              name="estacao" 
-              value={props.currentEstacao}
-              onChange={props.handleChange}
-            >
-              <option value="" disabled>Selecione</option>
-              <option value="iluminacao">Iluminação</option>
-              <option value="servidor">Servidor</option>
-              <option value="rede">Rede</option>
-              <option value="ar_cond">Ar condicionado</option>
-              <option value="bancadas">Bancadas</option>
-            </select>
-            <Button onClick={props.addToList}>Adicionar</Button>
+            <label>Estações selecionadas: </label>
+            <span>{props.getEstacaoList()}</span>
           </Box>
-          <Box p={1}>
-            <label htmlFor={"dataInicio-" + props.itemId}>Data de Início: </label>
-            <input 
-              id={"dataInicio-" + props.itemId} 
-              name="dataInicio" 
-              type="datetime-local"  
-              onChange={props.handleChange}
-            />
-          </Box>
-          <Box p={1}>
-            <label htmlFor={"dataFim-" + props.itemId}>Data de Fim: </label>
-            <input 
-              id={"dataFim-" + props.itemId} 
-              name="dataFim" 
-              type="datetime-local" 
-              onChange={props.handleChange}
-            />
-          </Box>
-          <Box textAlign="right"><Button type="submit">SEND</Button></Box>
-        </form>
-      </Box>  
-    </Box>
+          <form onSubmit={props.handleSubmit}>
+            <Box p={1}>
+              <label htmlFor={"estacao-" + props.itemId}>Selecione a estação: </label>
+              <select 
+                id={"estacao-" + props.itemId} 
+                name="estacao" 
+                value={props.currentEstacao}
+                onChange={props.handleChange}
+              >
+                <option value="" disabled>Selecione</option>
+                <option value="iluminacao">Iluminação</option>
+                <option value="servidor">Servidor</option>
+                <option value="rede">Rede</option>
+                <option value="ar_cond">Ar condicionado</option>
+                <option value="bancadas">Bancadas</option>
+              </select>
+              <Button onClick={props.addToList}>Adicionar</Button>
+            </Box>
+            <Box p={1}>
+              <label htmlFor={"dataInicio-" + props.itemId}>Data de Início: </label>
+              <input 
+                id={"dataInicio-" + props.itemId} 
+                name="dataInicio" 
+                type="datetime-local"  
+                onChange={props.handleChange}
+              />
+            </Box>
+            <Box p={1}>
+              <label htmlFor={"dataFim-" + props.itemId}>Data de Fim: </label>
+              <input 
+                id={"dataFim-" + props.itemId} 
+                name="dataFim" 
+                type="datetime-local" 
+                onChange={props.handleChange}
+              />
+            </Box>
+            <Box textAlign="right"><Button type="submit">SEND</Button></Box>
+          </form>
+        </Box>  
+      </Box>
+    </Modal>
   )
 }
 
@@ -203,11 +222,6 @@ function buildConfig(data) {
       scales: {
         xAxes: [{
           type: 'time',
-          ticks: {
-            source: "data"
-          },
-          time: {
-          }
         }]
       }
     }
