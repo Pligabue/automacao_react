@@ -1,22 +1,47 @@
 import React, { Component } from 'react';
-import { Box, IconButton, Button, Modal, Typography } from '@material-ui/core';
+import { Box, IconButton, Button, Modal, Typography, Select, MenuList, option } from '@material-ui/core';
 import SimpleChart from '../../chart/SimpleChart';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
+import Axios from 'axios';
 
 export default class DashboardItem extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      estacao: "",
+      estacaoList: [],
     }
   }
-  
 
-  componentDidUpdate(prevProps) {
-    this.resize()
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value 
+    })
+  }
+
+  addToList = () => {
+    if (!this.state.estacaoList.includes(this.state.estacao) && this.state.estacao) {
+      this.setState({
+        estacaoList: [...this.state.estacaoList, this.state.estacao],
+      })
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+    if (!this.state.dataInicio || !this.state.dataFim || this.state.estacaoList.length === 0) {
+      return
+    }
+    Axios.get(`https://automacao-backend.azurewebsites.net/medicoes?dataInicio=${this.state.dataInicio}&dataFim=${this.state.dataFim}&estacaoList=${this.state.estacaoList}`)
+      .then((response) => {
+        this.updateItem({
+          config: buildConfig(response.data),
+          type: "chart"
+        })
+      })
   }
 
   render() {
@@ -37,29 +62,21 @@ export default class DashboardItem extends Component {
         return (
           <Box bgcolor="secondary.main" borderRadius="100%" p={1}>
             <IconButton
-              onClick={() => { this.updateItem({ type: "chart" }) }}>
+              onClick={() => { this.updateItem({ type: "form" }) }}>
               <AddIcon />
             </IconButton>
           </Box>
         )
       case "form":
         return (
-          <form>
-            <Box>
-              <label htmlFor="station">Selecione a estação:</label>
-              <select id="station" name="station">
-                <option value="ar_cond">Ar-condicionado</option>
-                <option value="server">Servidor</option>
-              </select>
-            </Box>
-            <Box>
-              <label htmlFor="measurement">Selecione a medição:</label>
-              <select id="measurement" name="measurement">
-                <option value="interval">Consumo em intervalo de tempo</option>
-                <option value="value">Valor</option>
-              </select>
-            </Box>
-          </form>
+          <SelectionForm 
+            handleChange={this.handleChange}
+            handleSubmit={this.handleSubmit}
+            itemId={this.props.itemId}
+            currentEstacao={this.state.estacao}
+            getEstacaoList={this.getEstacaoList}
+            addToList={this.addToList}
+          />
         )
       case "chart":
         return (
@@ -67,10 +84,21 @@ export default class DashboardItem extends Component {
             itemId={this.props.itemId} 
             rowCount={this.props.rowCount} 
             itemCount={this.props.itemCount} 
+            config={this.props.config}
           />
         )
       default:
         break;
+    }
+  }
+
+  getEstacaoList = () => {
+    if (this.state.estacaoList.length > 1) {
+      return this.state.estacaoList.reduce((total, estacao) => {
+        return total + ", " + humanize(estacao)
+      })
+    } else {
+      return this.state.estacaoList[0] ? humanize(this.state.estacaoList[0]) : "Nenhuma"
     }
   }
 
@@ -81,11 +109,112 @@ export default class DashboardItem extends Component {
   removeItem = () => {
     this.props.removeItem(this.props.itemNum)
   }
+}
 
-  resize = () => {
-    // let itemId = "item-" + this.props.itemId
-    // let item = document.getElementById(itemId);
-    // item.style.width = this.props.width + "px"
-    // item.style.height = this.props.height + "px"
+function SelectionForm(props) {
+  return(
+    <Box position="absolute">
+      <Box bgcolor="secondary.main" p={1} textAlign="center"  borderRadius="0.5rem 0.5rem 0 0">
+        <Typography variant="h6">Adicionar Medição</Typography>
+      </Box>
+      <Box display="flex" flexDirection="column" alignItems="center" bgcolor="text.secondary" p={1} borderRadius="0 0 0.5rem 0.5rem">
+        <Box p={1}>
+          <label>Estações selecionadas: </label>
+          <span>{props.getEstacaoList()}</span>
+        </Box>
+        <form onSubmit={props.handleSubmit}>
+          <Box p={1}>
+            <label htmlFor={"estacao-" + props.itemId}>Selecione a estação: </label>
+            <select 
+              id={"estacao-" + props.itemId} 
+              name="estacao" 
+              value={props.currentEstacao}
+              onChange={props.handleChange}
+            >
+              <option value="" disabled>Selecione</option>
+              <option value="iluminacao">Iluminação</option>
+              <option value="servidor">Servidor</option>
+              <option value="rede">Rede</option>
+              <option value="ar_cond">Ar condicionado</option>
+              <option value="bancadas">Bancadas</option>
+            </select>
+            <Button onClick={props.addToList}>Adicionar</Button>
+          </Box>
+          <Box p={1}>
+            <label htmlFor={"dataInicio-" + props.itemId}>Data de Início: </label>
+            <input 
+              id={"dataInicio-" + props.itemId} 
+              name="dataInicio" 
+              type="datetime-local"  
+              onChange={props.handleChange}
+            />
+          </Box>
+          <Box p={1}>
+            <label htmlFor={"dataFim-" + props.itemId}>Data de Fim: </label>
+            <input 
+              id={"dataFim-" + props.itemId} 
+              name="dataFim" 
+              type="datetime-local" 
+              onChange={props.handleChange}
+            />
+          </Box>
+          <Box textAlign="right"><Button type="submit">SEND</Button></Box>
+        </form>
+      </Box>  
+    </Box>
+  )
+}
+
+function humanize(text) {
+  switch (text) {
+    case "iluminacao":
+      return "Iluminação"
+    case "servidor":
+      return "Servidor"
+    case "rede":
+      return "Rede"
+    case "ar_cond":
+      return "Ar condicionado"
+    case "bancadas":
+      return "Bancadas"
+    default:
+      return text
+  }  
+}
+
+function buildConfig(data) {
+  let datasets = []
+  for (let estacao of Object.keys(data)) {
+    console.log(data[estacao])
+    datasets.push({
+      fill: false,
+      label: humanize(estacao),
+      borderColor: getRandomColor(),
+      lineTension: 0.0,
+      data: data[estacao]
+    })
   }
+  let config = {
+    type: 'line',
+    data: {
+      datasets: datasets
+    },
+    options: {
+      scales: {
+        xAxes: [{
+          type: 'time',
+          ticks: {
+            source: "data"
+          },
+          time: {
+          }
+        }]
+      }
+    }
+  }
+  return config
+}
+
+function getRandomColor() {
+  return `rgb(${128+Math.floor(128*Math.random())}, ${128+Math.floor(128*Math.random())}, ${128+Math.floor(128*Math.random())})`;
 }
