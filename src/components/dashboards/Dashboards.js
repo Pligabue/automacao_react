@@ -18,7 +18,7 @@ export default class Dashboards extends Component {
   render() {
     return (
       <Box flexGrow="1" display="flex" flexDirection="column" justifyItems="stretch" bgcolor="secondary.main">
-        <Box p="1rem 4rem"><Typography variant="h3">Dashboards</Typography></Box>
+        <Box p="0.5rem 4rem"><Typography variant="h3">Dashboards</Typography></Box>
         <Box flexGrow="1" id="row-container" bgcolor="background.default">
           {this.getRows()}
         </Box>
@@ -33,7 +33,7 @@ export default class Dashboards extends Component {
         key={index} 
         rowNum={index} 
         rowCount={this.state.rows.length} 
-        height={1/this.state.rows.length}
+        height={(1/this.state.rows.length) - 0.01}
         items={this.state.rows[index].items}
         addItem={this.addItem}
         updateItem={this.updateItem}
@@ -89,8 +89,6 @@ export default class Dashboards extends Component {
     }
     this.setState({
       rows: rows
-    }, () => {
-      console.log(this.state)
     })
   }
 }
