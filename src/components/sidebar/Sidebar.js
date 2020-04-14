@@ -3,6 +3,7 @@ import Box from '@material-ui/core/Box';
 import { List, ListItem, ListItemText, Typography, Divider, ListItemIcon } from '@material-ui/core';
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined';
 import InfoIcon from '@material-ui/icons/Info';
+import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from "@material-ui/icons/BarChart"
 import { Link } from 'react-router-dom';
 
@@ -18,6 +19,7 @@ export default class Sidebar extends Component {
           <SidebarItem to="/dashboards" text="Dashboards"><BarChartIcon color="secondary" /></SidebarItem>
           <SidebarItem to="/algo" text="Algo"><AssignmentOutlinedIcon color="secondary" /></SidebarItem>
           <SidebarItem to="/sobre" text="Sobre o projeto"><InfoIcon color="secondary" /></SidebarItem>
+          <SidebarItem to="/equipe" text="Equipe"><PeopleIcon color="secondary" /></SidebarItem>
         </List>
       </Box>
     );

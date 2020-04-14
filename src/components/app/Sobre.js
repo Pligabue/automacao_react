@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Typography, Divider } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +42,6 @@ export default function Sobre() {
       <Typography paragraph variant="h5">
         Qual problema  projeto se propõe a resolver?
       </Typography>
-      <Divider variant="middle" />
       <Typography paragraph variant="subtitle1">
         O projeto visa proporcionar maior autonomia ao consumidor quanto
         ao monitoramento de seus gastos com energia elétrica e colaborar para a
@@ -58,7 +57,6 @@ export default function Sobre() {
       <Typography paragraph variant="h5">
         A qual contexto o projeto se aplica?
       </Typography>
-      <Divider variant="middle" />
       <Typography paragraph variant="subtitle1">
         Utiliza-se como base para o desenvolvimento deste projeto a
         simulação de um ambiente corporativo no qual utilizam-se
