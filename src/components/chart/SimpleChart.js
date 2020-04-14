@@ -17,7 +17,7 @@ export default class SimpleChart extends Component {
     let chartId = 'chart-' + String(this.props.itemId)
     let ctx = document.getElementById(chartId);
     
-    var chart = new Chart(ctx, this.props.config);
+    new Chart(ctx, this.props.config);
   }
 
   render() {
