@@ -3,6 +3,9 @@ import './App.css';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
+import Home from './Home';
+import Sobre from './Sobre';
+
 import Box from "@material-ui/core/Box"
 import Siderbar from '../sidebar/Sidebar';
 import Dashboards from '../dashboards/Dashboards';
@@ -28,8 +31,8 @@ export default class App extends Component {
             <Switch>
               <Route path="/dashboards"><Dashboards /></Route>
               <Route path="/outracoisa">Outra Coisa</Route>
-              <Route path="/algo">Algo</Route>
-              <Route path="/">Home</Route>
+              <Route path="/Sobre"><Sobre /></Route>
+              <Route path="/"><Home /></Route>
             </Switch>
           </Box>
         </ThemeProvider>
