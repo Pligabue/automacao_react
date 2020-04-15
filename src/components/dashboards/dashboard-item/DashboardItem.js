@@ -8,47 +8,50 @@ import Axios from 'axios';
 
 export default class DashboardItem extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      estacao: "",
-      estacaoList: [],
-      open: true,
-    }
-  }
-
   handleChange = (e) => {
-    this.setState({
+    this.updateItem({
       [e.target.name]: e.target.value 
     })
   }
 
   addToList = () => {
-    if (!this.state.estacaoList.includes(this.state.estacao) && this.state.estacao) {
-      this.setState({
-        estacaoList: [...this.state.estacaoList, this.state.estacao],
+    if (!this.props.estacaoList.includes(this.props.estacao) && this.props.estacao) {
+      this.updateItem({
+        estacaoList: [...this.props.estacaoList, this.props.estacao],
       })
     }
   }
 
-  closeModal = () => {
+  openForm = () => {
     this.updateItem({
-      type: "default"
+      type: "form",
+      estacao: "",
+      estacaoList: [],
+      open: true,
+    })
+  }
+
+  closeForm = () => {
+    this.updateItem({
+      type: "default",
+      estacao: "",
+      estacaoList: [],
+      open: false,
     })
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
-    if (!this.state.dataInicio || !this.state.dataFim || this.state.estacaoList.length === 0) {
+    if (!this.props.dataInicio || !this.props.dataFim || this.props.estacaoList.length === 0) {
       return
     }
-    let url = `https://automacao-backend.azurewebsites.net/medicoes?dataInicio=${this.state.dataInicio}&dataFim=${this.state.dataFim}&estacaoList=${this.state.estacaoList}`
+    let url = `https://automacao-backend.azurewebsites.net/medicoes?dataInicio=${this.props.dataInicio}&dataFim=${this.props.dataFim}&estacaoList=${this.props.estacaoList}`
     console.log(url)
     Axios.get(url)
       .then((response) => {
         console.log(response.data)
         this.updateItem({
-          config: buildConfig(response.data),
+          config: buildConfig(response.data, this.props.dataInicio, this.props.dataFim),
           type: "chart"
         })
       })
@@ -71,8 +74,7 @@ export default class DashboardItem extends Component {
       case "default":
         return (
           <Box bgcolor="secondary.main" borderRadius="100%" p={1}>
-            <IconButton
-              onClick={() => { this.updateItem({ type: "form" }) }}>
+            <IconButton onClick={this.openForm}>
               <AddIcon />
             </IconButton>
           </Box>
@@ -80,12 +82,12 @@ export default class DashboardItem extends Component {
       case "form":
         return (
           <SelectionForm 
-            open={this.state.open}
-            onClose={this.closeModal}
+            open={this.props.open}
+            onClose={this.closeForm}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             itemId={this.props.itemId}
-            currentEstacao={this.state.estacao}
+            currentEstacao={this.props.estacao}
             getEstacaoList={this.getEstacaoList}
             addToList={this.addToList}
           />
@@ -105,7 +107,7 @@ export default class DashboardItem extends Component {
   }
 
   getEstacaoList = () => {
-    let humanized = this.state.estacaoList.map((estacao, index) => (humanize(estacao)))
+    let humanized = this.props.estacaoList.map((estacao, index) => (humanize(estacao)))
     if (humanized.length >= 1) {
       return humanized.reduce((total, estacao) => {
         return total + ", " + estacao
@@ -140,14 +142,13 @@ function SelectionForm(props) {
             <label>Estações selecionadas: </label>
             <span>{props.getEstacaoList()}</span>
           </Box>
-          <form onSubmit={props.handleSubmit}>
+          <form onSubmit={props.handleSubmit} onChange={props.handleChange}>
             <Box p={1}>
               <label htmlFor={"estacao-" + props.itemId}>Selecione a estação: </label>
               <select 
                 id={"estacao-" + props.itemId} 
                 name="estacao" 
-                value={props.currentEstacao}
-                onChange={props.handleChange}
+                defaultValue=""
               >
                 <option value="" disabled>Selecione</option>
                 <option value="iluminacao">Iluminação</option>
@@ -156,15 +157,14 @@ function SelectionForm(props) {
                 <option value="ar_cond">Ar condicionado</option>
                 <option value="bancadas">Bancadas</option>
               </select>
-              <Button onClick={props.addToList}>Adicionar</Button>
             </Box>
+            <Box textAlign="right"><Button onClick={props.addToList}>Adicionar</Button></Box>
             <Box p={1}>
               <label htmlFor={"dataInicio-" + props.itemId}>Data de Início: </label>
               <input 
                 id={"dataInicio-" + props.itemId} 
                 name="dataInicio" 
                 type="datetime-local"  
-                onChange={props.handleChange}
               />
             </Box>
             <Box p={1}>
@@ -173,7 +173,6 @@ function SelectionForm(props) {
                 id={"dataFim-" + props.itemId} 
                 name="dataFim" 
                 type="datetime-local" 
-                onChange={props.handleChange}
               />
             </Box>
             <Box textAlign="right"><Button type="submit">SEND</Button></Box>
@@ -201,10 +200,11 @@ function humanize(text) {
   }  
 }
 
-function buildConfig(data) {
+function buildConfig(data, dataInicio, dataFim) {
   let datasets = []
+  let title = []
   for (let estacao of Object.keys(data)) {
-    console.log(data[estacao])
+    title.push(humanize(estacao))
     datasets.push({
       fill: false,
       label: humanize(estacao),
@@ -223,6 +223,10 @@ function buildConfig(data) {
         xAxes: [{
           type: 'time',
         }]
+      }, 
+      title: {
+        display: true,
+        text: title.join(", ") + " - " + formatDate(dataInicio) + " a " + formatDate(dataFim)
       }
     }
   }
@@ -231,4 +235,9 @@ function buildConfig(data) {
 
 function getRandomColor() {
   return `rgb(${128+Math.floor(128*Math.random())}, ${128+Math.floor(128*Math.random())}, ${128+Math.floor(128*Math.random())})`;
+}
+
+function formatDate(dateString) {
+  let date = new Date(dateString)
+  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}` 
 }
