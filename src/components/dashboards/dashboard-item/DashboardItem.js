@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Box, IconButton, Button, Typography, Modal, ThemeProvider } from '@material-ui/core';
-import SimpleChart from '../../chart/SimpleChart';
+import SimpleChart from '../chart/SimpleChart';
+import ModalForm from "../modal-form/ModalForm"
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
@@ -81,7 +82,7 @@ export default class DashboardItem extends Component {
         )
       case "form":
         return (
-          <SelectionForm 
+          <ModalForm 
             open={this.props.open}
             onClose={this.closeForm}
             handleChange={this.handleChange}
@@ -124,63 +125,6 @@ export default class DashboardItem extends Component {
   removeItem = () => {
     this.props.removeItem(this.props.itemNum)
   }
-}
-
-function SelectionForm(props) {
-  return(
-    <Modal 
-      open={props.open} 
-      onClose={props.onClose} 
-      style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-    >
-      <Box position="absolute" style={{ outline: 0 }} bgcolor="background.default">
-        <Box bgcolor="secondary.main" p={1} textAlign="center"  borderRadius="0.5rem 0.5rem 0 0">
-          <Typography variant="h6">Adicionar Medição</Typography>
-        </Box>
-        <Box display="flex" flexDirection="column" alignItems="center" bgcolor="text.secondary" p={1} borderRadius="0 0 0.5rem 0.5rem">
-          <Box p={1}>
-            <label>Estações selecionadas: </label>
-            <span>{props.getEstacaoList()}</span>
-          </Box>
-          <form onSubmit={props.handleSubmit} onChange={props.handleChange}>
-            <Box p={1}>
-              <label htmlFor={"estacao-" + props.itemId}>Selecione a estação: </label>
-              <select 
-                id={"estacao-" + props.itemId} 
-                name="estacao" 
-                defaultValue=""
-              >
-                <option value="" disabled>Selecione</option>
-                <option value="iluminacao">Iluminação</option>
-                <option value="servidor">Servidor</option>
-                <option value="rede">Rede</option>
-                <option value="ar_cond">Ar condicionado</option>
-                <option value="bancadas">Bancadas</option>
-              </select>
-            </Box>
-            <Box textAlign="right"><Button onClick={props.addToList}>Adicionar</Button></Box>
-            <Box p={1}>
-              <label htmlFor={"dataInicio-" + props.itemId}>Data de Início: </label>
-              <input 
-                id={"dataInicio-" + props.itemId} 
-                name="dataInicio" 
-                type="datetime-local"  
-              />
-            </Box>
-            <Box p={1}>
-              <label htmlFor={"dataFim-" + props.itemId}>Data de Fim: </label>
-              <input 
-                id={"dataFim-" + props.itemId} 
-                name="dataFim" 
-                type="datetime-local" 
-              />
-            </Box>
-            <Box textAlign="right"><Button type="submit">SEND</Button></Box>
-          </form>
-        </Box>  
-      </Box>
-    </Modal>
-  )
 }
 
 function humanize(text) {
