@@ -7,6 +7,10 @@ import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 
+import humanize from '../../../helpers/humanize';
+import formatDate from '../../../helpers/formatDate';
+import getRandomColor from '../../../helpers/getRandomColor'
+
 export default class DashboardItem extends Component {
 
   handleChange = (e) => {
@@ -127,23 +131,6 @@ export default class DashboardItem extends Component {
   }
 }
 
-function humanize(text) {
-  switch (text) {
-    case "iluminacao":
-      return "Iluminação"
-    case "servidor":
-      return "Servidor"
-    case "rede":
-      return "Rede"
-    case "ar_cond":
-      return "Ar condicionado"
-    case "bancadas":
-      return "Bancadas"
-    default:
-      return text
-  }  
-}
-
 function buildConfig(data, dataInicio, dataFim) {
   let datasets = []
   let title = []
@@ -175,13 +162,4 @@ function buildConfig(data, dataInicio, dataFim) {
     }
   }
   return config
-}
-
-function getRandomColor() {
-  return `rgb(${128+Math.floor(128*Math.random())}, ${128+Math.floor(128*Math.random())}, ${128+Math.floor(128*Math.random())})`;
-}
-
-function formatDate(dateString) {
-  let date = new Date(dateString)
-  return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}` 
 }
