@@ -65,7 +65,13 @@ export default class DashboardItem extends Component {
   render() {
 
     return (
-      <Box id={"item-" + this.props.itemId} position="relative" width={this.props.width}>
+      <Box 
+        id={"item-" + this.props.itemId} 
+        position="relative" 
+        width={this.props.width} 
+        border={1}
+        borderColor="background.secondary"
+      >
         <Box position="absolute" right="0" zIndex={1}><IconButton onClick={this.removeItem}><ClearIcon  /></IconButton></Box>
         <Box height="100%" display="flex" alignItems="center" justifyContent="center">
           {this.getContent()}

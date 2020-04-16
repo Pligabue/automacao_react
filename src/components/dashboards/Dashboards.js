@@ -33,7 +33,7 @@ export default class Dashboards extends Component {
         key={index} 
         rowNum={index} 
         rowCount={this.state.rows.length} 
-        height={(1/this.state.rows.length) - 0.01}
+        height={1/this.state.rows.length}
         items={this.state.rows[index].items}
         addItem={this.addItem}
         updateItem={this.updateItem}

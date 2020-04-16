@@ -29,7 +29,7 @@ export default class DashboardRow extends Component {
         itemNum={index}
         key={index} 
         itemId={String(this.props.rowNum) + String(item.itemNum)}
-        width={(1/this.props.items.length) - 0.01}
+        width={1/this.props.items.length}
         updateItem={this.updateItem}
         removeItem={this.removeItem}
       />
