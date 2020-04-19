@@ -47,10 +47,10 @@ export default class DashboardItem extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    if (!this.props.dataInicio || !this.props.dataFim || this.props.estacaoList.length === 0) {
+    if (!this.state.query || !this.props.dataInicio || !this.props.dataFim || this.props.estacaoList.length === 0) {
       return
     }
-    let url = `https://automacao-backend.azurewebsites.net/medicoes?dataInicio=${this.props.dataInicio}&dataFim=${this.props.dataFim}&estacaoList=${this.props.estacaoList}`
+    let url = `https://automacao-backend.azurewebsites.net/${this.state.query}?dataInicio=${this.props.dataInicio}&dataFim=${this.props.dataFim}&estacaoList=${this.props.estacaoList}`
     console.log(url)
     Axios.get(url)
       .then((response) => {
