@@ -13,7 +13,7 @@ export default function ModalForm(props) {
         <Box bgcolor="secondary.main" p={1} textAlign="center"  borderRadius="0.5rem 0.5rem 0 0">
           <Typography variant="h6">Adicionar Medição</Typography>
         </Box>
-        <Box display="flex" flexDirection="column" alignItems="center" bgcolor="text.secondary" p={1} borderRadius="0 0 0.5rem 0.5rem">
+        <Box display="flex" flexDirection="column" alignItems="stretch" bgcolor="text.secondary" p={1} borderRadius="0 0 0.5rem 0.5rem">
           <Box p={1}>
             <label>Estações selecionadas: </label>
             <span>{props.getEstacaoList()}</span>
@@ -25,6 +25,7 @@ export default function ModalForm(props) {
                 id={"estacao-" + props.itemId} 
                 name="estacao" 
                 defaultValue=""
+                style={{ width: "100%" }}
               >
                 <option value="" disabled>Selecione</option>
                 <option value="iluminacao">Iluminação</option>
@@ -36,11 +37,25 @@ export default function ModalForm(props) {
             </Box>
             <Box textAlign="right"><Button onClick={props.addToList}>Adicionar</Button></Box>
             <Box p={1}>
+              <label htmlFor={"query-" + props.itemId}>Selecione o tipo de dado: </label>
+              <select 
+                id={"query-" + props.itemId} 
+                name="query" 
+                defaultValue=""
+                style={{ width: "100%" }}
+              >
+                <option value="" disabled>Selecione</option>
+                <option value="valoresTarifas">Valor por Tarifa</option>
+                <option value="medicoes">Medições no Tempo</option>
+              </select>
+            </Box>
+            <Box p={1}>
               <label htmlFor={"dataInicio-" + props.itemId}>Data de Início: </label>
               <input 
                 id={"dataInicio-" + props.itemId} 
                 name="dataInicio" 
-                type="datetime-local"  
+                type="datetime-local" 
+                style={{ width: "100%" }} 
               />
             </Box>
             <Box p={1}>
@@ -49,6 +64,7 @@ export default function ModalForm(props) {
                 id={"dataFim-" + props.itemId} 
                 name="dataFim" 
                 type="datetime-local" 
+                style={{ width: "100%" }}
               />
             </Box>
             <Box textAlign="right"><Button type="submit">SEND</Button></Box>
