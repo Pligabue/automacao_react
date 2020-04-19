@@ -150,35 +150,61 @@ export default class DashboardItem extends Component {
   }
 }
 
-function buildConfig(data, dataInicio, dataFim) {
+function buildConfig(data, dataInicio, dataFim, query) {
   let datasets = []
   let title = []
-  for (let estacao of Object.keys(data)) {
-    title.push(humanize(estacao))
-    datasets.push({
-      fill: false,
-      label: humanize(estacao),
-      borderColor: getRandomColor(),
-      lineTension: 0.0,
-      data: data[estacao]
-    })
+  let type = (query === "valoresTarifas") ? "bar" : "line"
+  let options = {}
+  switch (query) {
+    case "valorTarifa":
+      title = data.labels.map((value) => (humanize(value)))
+      datasets = [
+        { label: "Tarifa Branca", borderColor: "white", backgroundColor: "white", data: data["tarifa_branca"] },
+        { label: "Tarifa Verde", borderColor: "green", backgroundColor: "green", data: data["tarifa_verde"] },
+        { label: "Tarifa Amarela", borderColor: "yellow", backgroundColor: "yellow", data: data["tarifa_amerela"] },
+        { label: "Tarifa Vermelha", borderColor: "red", backgroundColor: "red", data: data["tarifa_vermelha"] }
+      ]
+      options = {
+        title: {
+          display: true,
+          text: "Consumo: " + title.join(", ") + " - " + formatDate(dataInicio) + " a " + formatDate(dataFim)
+        }
+      }
+      break;
+    case "medicoes":
+      for (let estacao of Object.keys(data)) {
+        title.push(humanize(estacao))
+        datasets.push({
+          fill: false,
+          label: humanize(estacao),
+          borderColor: getRandomColor(),
+          lineTension: 0.0,
+          data: data[estacao]
+        })
+      }
+      options = {
+        scales: {
+          xAxes: [{
+            type: 'time',
+          }]
+        }, 
+      }, 
+        }, 
+        title: {
+          display: true,
+          text: title.join(", ") + " - " + formatDate(dataInicio) + " a " + formatDate(dataFim)
+        }
+      }
+      break;
+    default:
+      break;
   }
   let config = {
-    type: 'line',
+    type: type,
     data: {
       datasets: datasets
     },
-    options: {
-      scales: {
-        xAxes: [{
-          type: 'time',
-        }]
-      }, 
-      title: {
-        display: true,
-        text: title.join(", ") + " - " + formatDate(dataInicio) + " a " + formatDate(dataFim)
-      }
-    }
+    options: options
   }
   return config
 }
