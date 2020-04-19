@@ -30,15 +30,17 @@ export default class DashboardItem extends Component {
   openForm = () => {
     this.updateItem({
       type: "form",
+      query: "",
       estacao: "",
       estacaoList: [],
       open: true,
     })
   }
 
-  closeForm = () => {
+  goToDefault = () => {
     this.updateItem({
       type: "default",
+      query: "",
       estacao: "",
       estacaoList: [],
       open: false,
@@ -50,7 +52,7 @@ export default class DashboardItem extends Component {
     if (!this.props.query || !this.props.dataInicio || !this.props.dataFim || this.props.estacaoList.length === 0) {
       return
     }
-    let url = `https://automacao-backend.azurewebsites.net/${this.state.query}?dataInicio=${this.props.dataInicio}&dataFim=${this.props.dataFim}&estacaoList=${this.props.estacaoList}`
+    let url = `https://automacao-backend.azurewebsites.net/${this.props.query}?dataInicio=${new Date(this.props.dataInicio).toISOString()}&dataFim=${new Date(this.props.dataFim).toISOString()}&estacaoList=${this.props.estacaoList}`
     console.log(url)
     Axios.get(url)
       .then((response) => {
@@ -59,6 +61,9 @@ export default class DashboardItem extends Component {
           config: buildConfig(response.data, this.props.dataInicio, this.props.dataFim, this.props.query),
           type: "chart"
         })
+      })
+      .catch((err) => {
+        this.goToDefault()
       })
   }
 
@@ -99,7 +104,7 @@ export default class DashboardItem extends Component {
         return (
           <ModalForm 
             open={this.props.open}
-            onClose={this.closeForm}
+            onClose={this.goToDefault}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}
             itemId={this.props.itemId}
@@ -187,8 +192,6 @@ function buildConfig(data, dataInicio, dataFim, query) {
           xAxes: [{
             type: 'time',
           }]
-        }, 
-      }, 
         }, 
         title: {
           display: true,
