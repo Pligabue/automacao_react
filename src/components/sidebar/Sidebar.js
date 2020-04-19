@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 export default class Sidebar extends Component {
   render() {
     return (
-      <Box bgcolor="background.default">
+      <Box bgcolor="background.default" borderRight={1}>
         <Link to="/" style={{ textDecoration: 'none', color: "inherit" }}>
           <Typography variant="h4" noWrap color="textPrimary" style={{ padding: "2rem" }}>Automação</Typography>
         </Link>
