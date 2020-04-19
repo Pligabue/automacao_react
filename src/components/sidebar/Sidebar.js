@@ -17,7 +17,7 @@ export default class Sidebar extends Component {
         <List color="textPrimary">
           <Divider />
           <SidebarItem to="/dashboards" text="Dashboards"><BarChartIcon color="secondary" /></SidebarItem>
-          <SidebarItem to="/algo" text="Algo"><AssignmentOutlinedIcon color="secondary" /></SidebarItem>
+          <SidebarItem to="/ficha" text="Ficha"><AssignmentOutlinedIcon color="secondary" /></SidebarItem>
           <SidebarItem to="/sobre" text="Sobre o projeto"><InfoIcon color="secondary" /></SidebarItem>
           <SidebarItem to="/equipe" text="Equipe"><PeopleIcon color="secondary" /></SidebarItem>
         </List>
