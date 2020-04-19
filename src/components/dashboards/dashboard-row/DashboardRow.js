@@ -14,7 +14,7 @@ export default class DashboardRow extends Component {
   render() {
     return (
       <Box flexGrow="1" display="flex" flexDirection="row" height={this.props.height}>
-        <Box flexGrow="1" display="flex" flexDirection="row" id={"row-" + this.props.rowNum}>
+        <Box flexGrow="1" display="flex" flexDirection="row" id={"row-" + this.props.rowNum} overflow="hidden">
           {this.getItems()}
         </Box>
         <Button onClick={this.addItem}>ADD</Button>
@@ -27,8 +27,8 @@ export default class DashboardRow extends Component {
       <DashboardItem 
         {...item}
         itemNum={index}
-        key={index} 
-        itemId={String(this.props.rowNum) + String(item.itemNum)}
+        key={String(index)+String(this.props.items.length)+String(this.totalWeight())} 
+        itemId={String(this.props.rowNum) + String(index)}
         width={item.weight/this.totalWeight()}
         updateItem={this.updateItem}
         removeItem={this.removeItem}
@@ -39,7 +39,6 @@ export default class DashboardRow extends Component {
   }
 
   addItem = () => {
-    console.log("Total Weight =", this.totalWeight())
     if (this.totalWeight() >= 4) {
       return
     } else {
@@ -76,7 +75,6 @@ export default class DashboardRow extends Component {
   }
 
   totalWeight = () => {
-    console.log(this.props.items)
     return this.props.items.reduce((total, currentItem) => (
       total + currentItem.weight
     ), 0)

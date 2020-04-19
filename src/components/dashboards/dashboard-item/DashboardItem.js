@@ -4,6 +4,8 @@ import SimpleChart from '../chart/SimpleChart';
 import ModalForm from "../modal-form/ModalForm"
 
 import ClearIcon from '@material-ui/icons/Clear';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 
@@ -79,8 +81,9 @@ export default class DashboardItem extends Component {
         borderColor="background.secondary"
       >
         <Box position="absolute" right="0" zIndex={1}>
-          <Button onClick={this.increaseItemWeight}>Expand</Button>
-          <Button onClick={this.decreaseItemWeight}>Reduce</Button>
+          <IconButton onClick={this.decreaseItemWeight}><ArrowLeftIcon /></IconButton>
+          <span style={{ color: "white" }}>{this.props.weight}</span>
+          <IconButton onClick={this.increaseItemWeight}><ArrowRightIcon /></IconButton>
           <IconButton onClick={this.removeItem}><ClearIcon  /></IconButton>
         </Box>
         <Box height="100%" display="flex" alignItems="center" justifyContent="center">
@@ -147,29 +150,49 @@ export default class DashboardItem extends Component {
   }
 
   increaseItemWeight = () => {
-    this.props.increaseItemWeight(this.props.itemNum)
+    // if (this.props.type === "default") {
+      this.props.increaseItemWeight(this.props.itemNum)
+    // }
   }
 
   decreaseItemWeight = () => {
-    this.props.decreaseItemWeight(this.props.itemNum)
+    // if (this.props.type === "default") {
+      this.props.decreaseItemWeight(this.props.itemNum)
+    // }
   }
 }
 
 function buildConfig(data, dataInicio, dataFim, query) {
   let datasets = []
   let title = []
-  let type = (query === "valoresTarifas") ? "bar" : "line"
+  let config = {
+    type: (query === "valoresTarifas") ? "bar" : "line",
+    data: {
+      datasets: []
+    },
+    options: {
+
+    }
+  } 
   let options = {}
   switch (query) {
-    case "valorTarifa":
+    case "valoresTarifas":
       title = data.labels.map((value) => (humanize(value)))
+      config.data.labels = title
       datasets = [
         { label: "Tarifa Branca", borderColor: "white", backgroundColor: "white", data: data["tarifa_branca"] },
         { label: "Tarifa Verde", borderColor: "green", backgroundColor: "green", data: data["tarifa_verde"] },
-        { label: "Tarifa Amarela", borderColor: "yellow", backgroundColor: "yellow", data: data["tarifa_amerela"] },
+        { label: "Tarifa Amarela", borderColor: "yellow", backgroundColor: "yellow", data: data["tarifa_amarela"] },
         { label: "Tarifa Vermelha", borderColor: "red", backgroundColor: "red", data: data["tarifa_vermelha"] }
       ]
       options = {
+        scales: {
+          yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+          }]
+        }, 
         title: {
           display: true,
           text: "Consumo: " + title.join(", ") + " - " + formatDate(dataInicio) + " a " + formatDate(dataFim)
@@ -202,12 +225,7 @@ function buildConfig(data, dataInicio, dataFim, query) {
     default:
       break;
   }
-  let config = {
-    type: type,
-    data: {
-      datasets: datasets
-    },
-    options: options
-  }
+  config.data.datasets = datasets
+  config.options = options
   return config
 }

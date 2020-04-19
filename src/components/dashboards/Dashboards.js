@@ -17,7 +17,7 @@ export default class Dashboards extends Component {
 
   render() {
     return (
-      <Box flexGrow="1" display="flex" flexDirection="column" justifyItems="stretch" bgcolor="secondary.main">
+      <Box width={1} display="flex" flexDirection="column" justifyItems="stretch" bgcolor="secondary.main">
         <Box p="0.5rem 4rem"><Typography variant="h3">Dashboards</Typography></Box>
         <Box flexGrow="1" id="row-container" bgcolor="background.default">
           {this.getRows()}
@@ -30,7 +30,7 @@ export default class Dashboards extends Component {
   getRows = () => {
     return this.state.rows.map((value, index) => (
       <DashboardRow
-        key={index} 
+        key={String(index)+String(this.state.rows.length)} 
         rowNum={index} 
         rowCount={this.state.rows.length} 
         height={1/this.state.rows.length}
@@ -67,7 +67,7 @@ export default class Dashboards extends Component {
     })
     this.setState({
       rows: rows
-    })
+    }, () => { console.log("AddedItem", this.state.rows[0].items) })
   }
 
   updateItem = (rowNum, itemNum, obj) => {
