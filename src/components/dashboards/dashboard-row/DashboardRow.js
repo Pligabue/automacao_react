@@ -29,15 +29,22 @@ export default class DashboardRow extends Component {
         itemNum={index}
         key={index} 
         itemId={String(this.props.rowNum) + String(item.itemNum)}
-        width={1/this.props.items.length}
+        width={item.weight/this.totalWeight()}
         updateItem={this.updateItem}
         removeItem={this.removeItem}
+        increaseItemWeight={this.increaseItemWeight}
+        decreaseItemWeight={this.decreaseItemWeight}
       />
     ))
   }
 
   addItem = () => {
-    this.props.addItem(this.props.rowNum)
+    console.log("Total Weight =", this.totalWeight())
+    if (this.totalWeight() >= 4) {
+      return
+    } else {
+      this.props.addItem(this.props.rowNum)
+    }
   }
 
   updateItem = (itemNum, obj) => {
@@ -46,5 +53,32 @@ export default class DashboardRow extends Component {
 
   removeItem = (itemNum) => {
     this.props.removeItem(this.props.rowNum, itemNum)
+  }
+  
+  increaseItemWeight = (itemNum) => {
+    if (this.totalWeight() >= 4) {
+      return
+    } else {
+      this.props.updateItem(this.props.rowNum, itemNum, {
+        weight: this.props.items[itemNum].weight + 1
+      })
+    }
+  }
+
+  decreaseItemWeight = (itemNum) => {
+    if (this.props.items[itemNum].weight <= 1) {
+      return
+    } else {
+      this.props.updateItem(this.props.rowNum, itemNum, {
+        weight: this.props.items[itemNum].weight - 1
+      })
+    }
+  }
+
+  totalWeight = () => {
+    console.log(this.props.items)
+    return this.props.items.reduce((total, currentItem) => (
+      total + currentItem.weight
+    ), 0)
   }
 }

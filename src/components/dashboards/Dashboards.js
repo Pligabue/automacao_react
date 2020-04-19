@@ -49,7 +49,7 @@ export default class Dashboards extends Component {
     let newRow = {
       items: [{
         type: "default",
-        itemNum: 0
+        weight: 1,
       }]
     }
     if (this.state.rows.length < 3) {
@@ -60,13 +60,10 @@ export default class Dashboards extends Component {
   }
 
   addItem = (rowNum) => {
-    if (this.state.rows[rowNum].items.length >= 4) {
-      return
-    }
     let rows = this.state.rows
     rows[rowNum].items = rows[rowNum].items.concat({
       type: "default",
-      itemNum: rows[rowNum].items.length
+      weight: 1,
     })
     this.setState({
       rows: rows

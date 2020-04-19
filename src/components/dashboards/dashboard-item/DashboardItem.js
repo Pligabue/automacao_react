@@ -69,10 +69,15 @@ export default class DashboardItem extends Component {
         id={"item-" + this.props.itemId} 
         position="relative" 
         width={this.props.width} 
-        border={1}
+        borderRight={1}
+        borderBottom={1}
         borderColor="background.secondary"
       >
-        <Box position="absolute" right="0" zIndex={1}><IconButton onClick={this.removeItem}><ClearIcon  /></IconButton></Box>
+        <Box position="absolute" right="0" zIndex={1}>
+          <Button onClick={this.increaseItemWeight}>Expand</Button>
+          <Button onClick={this.decreaseItemWeight}>Reduce</Button>
+          <IconButton onClick={this.removeItem}><ClearIcon  /></IconButton>
+        </Box>
         <Box height="100%" display="flex" alignItems="center" justifyContent="center">
           {this.getContent()}
         </Box>  
@@ -134,6 +139,14 @@ export default class DashboardItem extends Component {
 
   removeItem = () => {
     this.props.removeItem(this.props.itemNum)
+  }
+
+  increaseItemWeight = () => {
+    this.props.increaseItemWeight(this.props.itemNum)
+  }
+
+  decreaseItemWeight = () => {
+    this.props.decreaseItemWeight(this.props.itemNum)
   }
 }
 
