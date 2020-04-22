@@ -1,8 +1,6 @@
 # Automação
 
-## Back-end
-
-O repositório do back-end, onde são feitas as consultas ao banco de dados, está em [https://github.com/rodipm/automacao](https://github.com/rodipm/automacao)
+O programa pode ser executado localmente ou acessado pelo Azure Websites.
 
 ## Para rodar o programa localmente
 
@@ -25,6 +23,10 @@ Por fim, para rodar o programa, execute
 O programa deve iniciar o servidor de desenvolvimento.<br />
 Abra [http://localhost:3000](http://localhost:3000) para ver o programa no navegador.
 
-## Para acessar o programa pelo Azure
+## Para acessar o programa pelo Azure Websites
 
-[Em construção]
+O programa está disponível no site [http://automacao.azurewebsites.net/](http://automacao.azurewebsites.net/).
+
+## Back-end
+
+O repositório do back-end, onde são feitas as consultas ao banco de dados, está em [https://github.com/rodipm/automacao](https://github.com/rodipm/automacao)
