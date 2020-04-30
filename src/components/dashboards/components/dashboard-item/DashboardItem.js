@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box, IconButton, Button, Typography, Modal, ThemeProvider } from '@material-ui/core';
+import { Box, IconButton } from '@material-ui/core';
 import SimpleChart from '../chart/SimpleChart';
 import ModalForm from "../modal-form/ModalForm"
 
@@ -9,9 +9,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import AddIcon from '@material-ui/icons/Add';
 import Axios from 'axios';
 
-import humanize from '../../../helpers/humanize';
-import formatDate from '../../../helpers/formatDate';
-import getRandomColor from '../../../helpers/getRandomColor'
+import { formatDate, getRandomColor, humanize } from '../../../../helpers';
 
 export default class DashboardItem extends Component {
 
